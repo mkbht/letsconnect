@@ -1,40 +1,73 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="main">
+    <div class="main" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
 
         <div class="card bg-gray">
             <div class="card-body">
-                <form>
-                    <textarea placeholder="Write your status..." class="form-control no-outline" rows="18"></textarea>
-                    <button class="btn btn-primary float-right">POST</button>
+                <form method="post" action="{{ route('post.store') }}">
+                    @csrf
+                    <textarea name="content" placeholder="Write your status..." class="form-control no-outline"
+                              rows="18"></textarea>
+                    <button class="btn btn-primary float-right" type="submit">POST</button>
                 </form>
             </div>
         </div>
 
-        @for($i=0;$i<10;$i++)
-            <div class="card status-box">
-                <div class="card-body">
-                    <div class="status-header">
-                        <img src="https://picsum.photos/100" class="img-thumbnail rounded-circle img-fluid avatar"/>
-                        <div class="user-block">
-                            <div><b>{{ Auth::user()->name }}</b></div>
-                            <p class="text-black-50">{{ @Auth::user()->username }}</p>
-                        </div>
+        <div v-for="post in posts.data" class="card status-box">
+            <div class="card-body">
+                <div class="status-header">
+                    <img src="https://picsum.photos/100" class="img-thumbnail rounded-circle img-fluid avatar"/>
+                    <div class="user-block">
+                        <div><b>@{{ post.user.name }}</b></div>
+                        <p class="text-black-50">@{{ post.user.username }}</p>
                     </div>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                        the card's content.</p>
                 </div>
-                <img alt="Card image cap" class="card-img-top" src="https://picsum.photos/300">
-                <div class="card-body p-4">
-                    <i class="material-icons text-muted">favorite</i>
-                    <b class="like-count">2</b>
-                    <i class="material-icons text-muted pl-4">comment</i>
-                    <b class="like-count">2</b>
+                <p class="card-text">@{{ post.content }}</p>
+            </div>
+            <img v-if="post.image != null" alt="Card image cap" class="card-img-top"
+                 :src="'{{ asset('tmp') }}/'+post.image">
+            <div class="card-body p-4">
+                <i class="material-icons text-muted">favorite</i>
+                <b class="like-count">0</b>
+                <i class="material-icons text-muted pl-4">comment</i>
+                <b class="like-count">0</b>
+                <span class="float-right">@{{ post.sentiment.category }}</span>
+                <div class="progress pt-4">
+                    <div class="progress-bar bg-success" :style="'width:' +post.sentiment.score.positivity+ '%'">
+
+                    </div>
+                    <div class="progress-bar bg-danger" :style="'width:' +post.sentiment.score.negativity+ '%'">
+
+                    </div>
                 </div>
             </div>
-        @endfor
+        </div>
+
+        {!! $posts->links()  !!}
+        {{--        {{ dd($posts) }}--}}
 
 
     </div>
+@endsection
+
+@section('vue-scripts')
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                posts: {!! json_encode($posts) !!},
+                busy: false,
+            },
+            methods: {
+                loadMore: function () {
+                    this.busy = true;
+
+                    setTimeout(() => {
+                        this.busy = false;
+                    }, 1000);
+                }
+            }
+        })
+    </script>
 @endsection

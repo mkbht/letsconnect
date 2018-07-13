@@ -59,6 +59,7 @@ class Sentiment
                 $words = self::breakSentenceToWords($data);
 
                 foreach ($words as $word) {
+                    $word = strtolower($word);
                     $this->wordType[$type]++;
                     $this->wordCount++;
                     !isset($this->categories[$word][$type])
@@ -85,6 +86,7 @@ class Sentiment
         foreach ($this->types as $type) {
             $categoryScores[$type] = 1;
             foreach ($words as $word) {
+                $word = strtolower($word);
                 if (!isset($this->categories[$word][$type])) {
                     $tracker = 0;
                 } else {
@@ -120,8 +122,8 @@ class Sentiment
         return [
             'category' => $category,
             'score' => [
-                'positivity' => $positivity,
-                'negativity' => $negativity
+                'positivity' => $positivity*100,
+                'negativity' => $negativity*100
             ]
         ];
     }

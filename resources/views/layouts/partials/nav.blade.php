@@ -27,7 +27,8 @@
                     </li>
                 @else
                     <li class="nav-item">
-                        <a href="#" class="nav-link"><i class="material-icons">notifications_none</i></a>
+                        <a href="#" class="nav-link"><i class="material-icons">notifications</i> <span
+                                    class="badge-pill badge badge-danger">1</span> </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

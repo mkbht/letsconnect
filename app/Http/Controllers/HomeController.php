@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Post;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data['posts'] = Post::with('user')->latest()->paginate(5);
+
+        return view('home', $data);
     }
 }

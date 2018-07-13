@@ -40,7 +40,8 @@
     </main>
 </div>
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}" defer></script>
+<script src="{{ asset('js/app.js') }}"></script>
+@yield('vue-scripts')
 <script src="{{ asset('plugins/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('js/jquery.sticky-kit.min.js') }}"></script>
 {{--<script src="{{ asset('plugins/sticky-sidebar/dist/jquery.sticky-sidebar.min.js') }}"></script>--}}

@@ -4,7 +4,7 @@ $(function() {
     $('#sidebar-left > .sidebar__inner').stick_in_parent({
         parent: '.row',
         spacer: '.sticky-content-spacer',
-        offset_top: 70,
+        offset_top: 85,
         bottoming: false
     });
 
@@ -12,7 +12,7 @@ $(function() {
     $('#sidebar-right > .sidebar__inner').stick_in_parent({
         parent: '.row',
         spacer: '.sticky-content-spacer',
-        offset_top: 70,
+        offset_top: 85,
         bottoming: false
     });
 
