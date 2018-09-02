@@ -48,6 +48,7 @@
 <script src="{{ asset('plugins/popper.js/dist/umd/popper.min.js') }}"></script>
 <script src="{{ asset('plugins/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('plugins/daemonite-material/js/material.min.js') }}"></script>
+<script src="{{ asset('js/infinite-scroll.min.js') }}"></script>
 <script src="{{ asset('js/scripts.js') }}"></script>
 @yield('scripts')
 </body>

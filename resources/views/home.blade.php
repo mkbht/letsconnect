@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="main" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-
+    <div class="main">
         <div class="card bg-gray">
             <div class="card-body">
                 <form method="post" action="{{ route('post.store') }}">
@@ -13,35 +12,42 @@
                 </form>
             </div>
         </div>
+        <div id="status-list">
+            @foreach($posts as $post)
+                <div class="card status-box">
+                    <div class="card-body">
+                        <div class="status-header">
+                            <img src="https://picsum.photos/100" class="img-thumbnail rounded-circle img-fluid avatar"/>
+                            <div class="user-block">
+                                <div><b>{{ $post->user->name }}</b></div>
+                                <p class="text-black-50">{{ $post->user->username }}</p>
+                            </div>
+                        </div>
+                        <p class="card-text">{{ $post->content }}</p>
+                    </div>
+                    @if($post->image != null)
+                        <img alt="Card image cap" class="card-img-top"
+                             src="'{{ asset('tmp/'. $post->image) }}">
+                    @endif
+                    <div class="card-body p-4">
+                        <i class="material-icons text-muted">favorite</i>
+                        <b class="like-count">0</b>
+                        <i class="material-icons text-muted pl-4">comment</i>
+                        <b class="like-count">0</b>
+                        <span class="float-right">{{ $post->sentiment['category'] }}</span>
+                        <div class="progress pt-4">
+                            <div class="progress-bar bg-success"
+                                 style="width:{{ $post->sentiment['score']['positivity'] }}%">
 
-        <div v-for="post in posts.data" class="card status-box">
-            <div class="card-body">
-                <div class="status-header">
-                    <img src="https://picsum.photos/100" class="img-thumbnail rounded-circle img-fluid avatar"/>
-                    <div class="user-block">
-                        <div><b>@{{ post.user.name }}</b></div>
-                        <p class="text-black-50">@{{ post.user.username }}</p>
+                            </div>
+                            <div class="progress-bar bg-danger"
+                                 style="width: {{ $post->sentiment['score']['negativity'] }}%">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <p class="card-text">@{{ post.content }}</p>
-            </div>
-            <img v-if="post.image != null" alt="Card image cap" class="card-img-top"
-                 :src="'{{ asset('tmp') }}/'+post.image">
-            <div class="card-body p-4">
-                <i class="material-icons text-muted">favorite</i>
-                <b class="like-count">0</b>
-                <i class="material-icons text-muted pl-4">comment</i>
-                <b class="like-count">0</b>
-                <span class="float-right">@{{ post.sentiment.category }}</span>
-                <div class="progress pt-4">
-                    <div class="progress-bar bg-success" :style="'width:' +post.sentiment.score.positivity+ '%'">
-
-                    </div>
-                    <div class="progress-bar bg-danger" :style="'width:' +post.sentiment.score.negativity+ '%'">
-
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
 
         {!! $posts->links()  !!}
